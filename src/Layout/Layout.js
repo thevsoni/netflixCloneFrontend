@@ -11,7 +11,7 @@ const Layout = ({ children }) => {
                 {children}
                 <Footer />
                 {/* mobile footer */}
-                <MobileFooter />
+                {/* <MobileFooter /> */}
             </div>
         </>
     )

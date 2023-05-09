@@ -124,6 +124,19 @@ const deleteUserAction = (id) => async (dispatch, getState) => {
     }
 }
 
+//user like movie action
+const likeMovieAction = (movieId) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: userConstants.LIKE_MOVIE_REQUEST })
+        const response = await userApi.likeMovieService(movieId, tokenProtection(getState))
+        dispatch({ type: userConstants.LIKE_MOVIE_SUCCESS, payload: response })
+        toast.success("Added to your favorites")
+        dispatch(getFavoriteMoviesAction());
+    } catch (error) {
+        ErrorsAction(error, dispatch, userConstants.LIKE_MOVIE_FAIL)
+    }
+}
+
 export {
     loginAction,
     registerAction,
@@ -135,4 +148,5 @@ export {
     deleteFavoriteMoviesAction,
     getAllUsersAction,
     deleteUserAction,
+    likeMovieAction,
 };

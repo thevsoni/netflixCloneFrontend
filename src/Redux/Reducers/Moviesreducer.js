@@ -40,7 +40,7 @@ export const movieDetailsReducer = (state = { movie: {} }, action) => {
         case moviesConstants.MOVIE_DETAILS_REQUEST:
             return { isLoading: true }
         case moviesConstants.MOVIE_DETAILS_SUCCESS:
-            return { isLoading: false, movies: action.payload }
+            return { isLoading: false, movie: action.payload }
         case moviesConstants.MOVIE_DETAILS_FAIL:
             return { isLoading: false, isError: action.payload }
         case moviesConstants.MOVIE_DETAILS_RESET:
@@ -59,6 +59,22 @@ export const movieTopRatedReducer = (state = { movies: [] }, action) => {
             return { isLoading: false, movies: action.payload }
         case moviesConstants.MOVIE_TOP_RATED_FAIL:
             return { isLoading: false, isError: action.payload }
+        default:
+            return state;
+    }
+}
+
+//create review
+export const createReviewReducer = (state = {}, action) => {
+    switch (action.type) {
+        case moviesConstants.CREATE_REVIEW_REQUEST:
+            return { isLoading: true }
+        case moviesConstants.CREATE_REVIEW_SUCCESS:
+            return { isLoading: false, isSuccess: true }
+        case moviesConstants.CREATE_REVIEW_FAIL:
+            return { isLoading: false, isError: action.payload }
+        case moviesConstants.CREATE_REVIEW_RESET:
+            return {}
         default:
             return state;
     }
