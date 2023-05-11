@@ -9,8 +9,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getMovieByIdAction } from '../Redux/Actions/MoviesActions';
 import Loader from '../Components/Notification/Loader';
 import { RiMovie2Line } from 'react-icons/ri';
+import { IfMovieLiked, LikeMovie } from '../Context/Functionalities';
 
 const WatchPage = () => {
+
     let { id } = useParams();
     // const movie = Movies.find((movie) => movie.name === id);
     const dispatch = useDispatch();
@@ -22,7 +24,15 @@ const WatchPage = () => {
     //use selector
     const { isLoading, isError, movie } = useSelector((state) => state.getMovieById)
 
-    //useEffect
+    const { isLoading: likeLoading } = useSelector((state) => state.userLikeMovie)
+    const { userInfo } = useSelector((state) => state.userLogin)
+
+    //if liked function
+    const isLiked = (movie) => IfMovieLiked(movie)
+    // const isLiked = (movie) => {
+    //     return IfMovieLiked(movie)
+    // }
+    // //useEffect
     useEffect(() => {
         //movie id
         dispatch(getMovieByIdAction(id));
@@ -38,7 +48,12 @@ const WatchPage = () => {
                             <BiArrowBack /> {movie?.name}
                         </Link>
                         <div className='flex-btn sm:w-auto w-full gap-5'>
-                            <button className='bg-white hover:text-subMain transitions bg-opacity-30 text-white rounded px-4 py-3 text-sm'>
+                            <button
+                                onClick={() => LikeMovie(movie, dispatch, userInfo)}
+                                disabled={isLiked(movie) || likeLoading}
+                                className={`bg-white hover:text-subMain 
+                                    ${isLiked(movie) ? "text-subMain" : "text-white"}
+                                    transitions bg-opacity-30 rounded px-4 py-3 text-sm`}>
                                 <FaHeart />
                             </button>
                             <button className='bg-subMain flex-rows gap-2 hover:text-main transitions text-white rounded px-8 py-3 text-sm font-medium'>

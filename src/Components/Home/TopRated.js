@@ -12,8 +12,18 @@ import Titles from '../Titles'
 import Rating from './Stars';
 import Loader from '../Notification/Loader';
 import { Empty } from '../Notification/Empty';
+import { useDispatch, useSelector } from 'react-redux';
+import { IfMovieLiked, LikeMovie } from '../../Context/Functionalities';
 
 const SwiperTop = ({ nextEl, prevEl, movies }) => {
+    const { isLoading } = useSelector((state) => state.userLikeMovie)
+    const dispatch = useDispatch()
+    const { userInfo } = useSelector((state) => state.userLogin)
+
+    //if liked function
+    const isLiked = (movie) => {
+        return IfMovieLiked(movie)
+    }
     return (
         <Swiper
             navigation={{ nextEl, prevEl }}
@@ -52,7 +62,12 @@ const SwiperTop = ({ nextEl, prevEl, movies }) => {
                                 alt={movie?.name}
                                 className='w-full h-full object-cover rounded-lg' />
                             <div className='px-4 hoveres gap-6 text-center absolute bg-black bg-opacity-70 top-0 left-0 right-0 bottom-0'>
-                                <button className='w-12 h-12 flex-colo transitions hover:bg-subMain rounded-full bg-white bg-opacity-30 text-white'>
+                                <button
+                                    onClick={() => LikeMovie(movie, dispatch, userInfo)}
+                                    disabled={isLiked(movie) || isLoading}
+                                    className={`w-12 h-12 flex-colo transitions hover:bg-subMain rounded-full
+                                              ${isLiked(movie) ? "bg-subMain" : "bg-white bg-opacity-30"}
+                                             text-white`}>
                                     <FaHeart />
                                 </button>
                                 {/* <Link to={`/movie/${movie.name}`} className='font-semibold text-xl trancuted line-clamp-2'> */}
